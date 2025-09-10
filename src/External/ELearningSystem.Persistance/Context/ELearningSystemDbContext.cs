@@ -16,4 +16,37 @@ public class ELearningSystemDbContext(DbContextOptions<ELearningSystemDbContext>
     public DbSet<SocialMedia> SocialMedias => Set<SocialMedia>();
     public DbSet<Subscriber> Subscribers => Set<Subscriber>();
     public DbSet<Testimonial> Testimonials => Set<Testimonial>();
+
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
+    {
+        modelBuilder.ApplyConfigurationsFromAssembly(typeof(ELearningSystem.Persistance.AssemblyReference).Assembly);
+        base.OnModelCreating(modelBuilder);
+    }
+
+    public override int SaveChanges()
+    {
+        ChangeTracker.Entries<BaseEntity>().Where(e => e.State == EntityState.Modified).ToList().ForEach(entity =>
+        {
+            _ = entity.State switch
+            {
+                EntityState.Modified => entity.Entity.UpdatedDate = DateTime.Now
+            };
+            entity.Property(x => x.CreatedDate).IsModified = false;
+        });
+
+        return base.SaveChanges();
+    }
+
+    public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
+    {
+        ChangeTracker.Entries<BaseEntity>().Where(e => e.State == EntityState.Added).ToList().ForEach(entity =>
+        {
+            _ = entity.State switch
+            {
+                EntityState.Added => entity.Entity.CreatedDate = DateTime.Now
+            };
+        });
+
+        return await base.SaveChangesAsync(cancellationToken);
+    }
 }

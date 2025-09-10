@@ -4,6 +4,7 @@ using ELearningSystem.Persistance.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ELearningSystem.Persistance.Migrations
 {
     [DbContext(typeof(ELearningSystemDbContext))]
-    partial class ELearningSystemDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250910000536_EditCreateDateAndUpdateDateNames")]
+    partial class EditCreateDateAndUpdateDateNames
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

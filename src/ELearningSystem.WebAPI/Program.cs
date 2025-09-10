@@ -1,3 +1,4 @@
+using ELearningSystem.Application.IServices;
 using ELearningSystem.Domain.IRepositories;
 using ELearningSystem.Domain.IRepositories.About;
 using ELearningSystem.Domain.IRepositories.Banner;
@@ -23,15 +24,17 @@ using ELearningSystem.Persistance.Repositories.Message;
 using ELearningSystem.Persistance.Repositories.SocialMedia;
 using ELearningSystem.Persistance.Repositories.Subscriber;
 using ELearningSystem.Persistance.Repositories.Testimonial;
+using ELearningSystem.Persistance.Services;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
-builder.Services.AddControllers();
+builder.Services.AddControllers().AddApplicationPart(typeof(ELearningSystem.Presentantion.AssemblyReference).Assembly);
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
-builder.Services.AddOpenApi();
+//builder.Services.AddOpenApi();
+builder.Services.AddSwaggerGen();
 builder.Services.AddDbContext<ELearningSystemDbContext>(options =>
 {
     options.UseSqlServer(builder.Configuration.GetConnectionString("SqlConnection"), b => b.MigrationsAssembly("ELearningSystem.Persistance"));
@@ -77,12 +80,21 @@ builder.Services.AddScoped<ITestimonialCommandRepository, TestimonialCommandRepo
 builder.Services.AddScoped<ITestimonialQueryRepository, TestimonialQueryRepository>();
 #endregion
 
+#region Services Injection
+builder.Services.AddScoped<IAboutService, AboutService>();
+#endregion
+
+builder.Services.AddAutoMapper(typeof(ELearningSystem.Persistance.AssemblyReference).Assembly);
+builder.Services.AddMediatR(cfr => cfr.RegisterServicesFromAssembly(typeof(ELearningSystem.Application.AssemblyReference).Assembly));
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
-    app.MapOpenApi();
+    //app.MapOpenApi();
+    app.UseSwagger();
+    app.UseSwaggerUI();
 }
 
 app.UseHttpsRedirection();

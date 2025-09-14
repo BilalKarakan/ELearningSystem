@@ -26,12 +26,17 @@ using ELearningSystem.Persistance.Repositories.Subscriber;
 using ELearningSystem.Persistance.Repositories.Testimonial;
 using ELearningSystem.Persistance.Services;
 using Microsoft.EntityFrameworkCore;
+using System.Text.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
-builder.Services.AddControllers().AddApplicationPart(typeof(ELearningSystem.Presentantion.AssemblyReference).Assembly);
+builder.Services.AddControllers().AddApplicationPart(typeof(ELearningSystem.Presentantion.AssemblyReference).Assembly).AddNewtonsoftJson(options =>
+{
+    options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore;
+    options.SerializerSettings.NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore;
+});
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 //builder.Services.AddOpenApi();
 builder.Services.AddSwaggerGen();
@@ -82,6 +87,16 @@ builder.Services.AddScoped<ITestimonialQueryRepository, TestimonialQueryReposito
 
 #region Services Injection
 builder.Services.AddScoped<IAboutService, AboutService>();
+builder.Services.AddScoped<IBannerService, BannerService>();
+builder.Services.AddScoped<IBlogCategoryService, BlogCategoryService>();
+builder.Services.AddScoped<IBlogService, BlogService>();
+builder.Services.AddScoped<IContactService, ContactService>();
+builder.Services.AddScoped<ICourseCategoryService, CourseCategoryService>();
+builder.Services.AddScoped<ICourseService, CourseService>();
+builder.Services.AddScoped<IMessageService, MessageService>();
+builder.Services.AddScoped<ISocialMediaService, SocialMediaService>();
+builder.Services.AddScoped<ISubscriberService, SubscriberService>();
+builder.Services.AddScoped<ITestimonialService, TestimonialService>();
 #endregion
 
 builder.Services.AddAutoMapper(typeof(ELearningSystem.Persistance.AssemblyReference).Assembly);

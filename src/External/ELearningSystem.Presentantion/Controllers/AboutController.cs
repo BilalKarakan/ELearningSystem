@@ -13,17 +13,17 @@ namespace ELearningSystem.Presentantion.Controllers;
 public class AboutController(IMediator _mediator) : ControllerBase
 {
     [HttpPost("[action]")]
-    public async Task<IActionResult> CreateAsync(CreateAboutCommand request) => Ok(await _mediator.Send(request));
+    public async Task<IActionResult> CreateAsync(CreateAboutCommand request, CancellationToken cancellationToken) => Ok(await _mediator.Send(request, cancellationToken));
 
     [HttpPut("[action]")]
-    public async Task<IActionResult> UpdateAsync(UpdateAboutCommand request) => Ok(await _mediator.Send(request));
+    public async Task<IActionResult> UpdateAsync(UpdateAboutCommand request, CancellationToken cancellationToken) => Ok(await _mediator.Send(request, cancellationToken));
 
     [HttpDelete("[action]")]
-    public async Task<IActionResult> DeleteAsync(DeleteAboutCommand request) => Ok(await _mediator.Send(request));
+    public async Task<IActionResult> DeleteAsync(DeleteAboutCommand request, CancellationToken cancellationToken) => Ok(await _mediator.Send(request, cancellationToken));
 
     [HttpGet("[action]")]
-    public async Task<IActionResult> GetAllAsync([FromQuery] GetAllAboutQuery request) => Ok(await _mediator.Send(request));
+    public async Task<IActionResult> GetAllAsync([FromQuery] GetAllAboutQuery request, CancellationToken cancellationToken) => Ok(await _mediator.Send(request, cancellationToken));
 
     [HttpGet("[action]")]
-    public async Task<IActionResult> GetByIdAsync([FromQuery] GetOneAboutQuery request) => Ok(await _mediator.Send(request));
+    public async Task<IActionResult> GetByIdAsync([FromQuery] GetOneAboutQuery request, CancellationToken cancellationToken) => Ok(await _mediator.Send(request, cancellationToken));
 }

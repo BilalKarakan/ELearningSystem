@@ -1,5 +1,6 @@
 ﻿using ELearningSystem.Domain.IRepositories.Blog;
 using ELearningSystem.Persistance.Context;
+using Microsoft.EntityFrameworkCore;
 
 namespace ELearningSystem.Persistance.Repositories.Blog;
 
@@ -9,4 +10,6 @@ public class BlogQueryRepository : GenericQueryRepository<Domain.Entities.Blog>,
     {
         
     }
+
+    public async Task<IEnumerable<Domain.Entities.Blog>> GetListWithCategoriesAsync(CancellationToken cancellationToken = default) => await _context.Blogs.AsNoTracking().Include(b => b.BlogCategory).ToListAsync();
 }
